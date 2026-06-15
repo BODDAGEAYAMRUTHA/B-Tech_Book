@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="shortcut icon" href="library2.jpeg" type="image/x-icon">
+  <title>Artificial Intelligence - IT</title>
+
+  <style>
+/* ===== Body & Layout ===== */
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f4f6fb;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #111; /* Bright, dark text for body */
+}
+
+header {
+  background: linear-gradient(90deg, #6366f1, #0b5ed7);
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 1rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Main Container */
+.main-container {
+  flex: 1;
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 250px;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  color: #0b5ed7; /* Brighter blue heading */
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.topic {
+  background: #f8f9fa;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  font-weight: 600; /* Slightly bolder */
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  color: #111; /* Darker, more readable */
+}
+
+.topic:hover {
+  background: #6366f1;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* ===== Content Area ===== */
+.content {
+  flex: 1;
+  background: #ffffff; /* Bright white background */
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  overflow-y: auto;
+  color: #111; /* Brighter font */
+}
+
+.content h1 {
+  color: #0b5ed7; /* Brighter blue */
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+#topicContent h2 {
+  color: #0b3ed7; /* Deep, readable blue */
+  margin-top: 1rem;
+  font-weight: 700;
+}
+
+#topicContent p {
+  margin-top: 0.5rem;
+  line-height: 1.6;
+  color: #111; /* Darker text for readability */
+}
+
+.placeholder {
+  color: #fafafa; /* Slightly darker gray placeholder */
+  font-size: 1.1rem;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* ===== Back Button ===== */
+.back-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999;
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(90deg, #6366f1, #ec4899);
+  color: #fff;
+  font-weight: 600; /* Bolder text */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+  <header>Learning Dashboard</header>
+
+  <div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Topics</h2>
+      <div id="topicList"></div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+      <h1>Artificial Intelligence - IT</h1>
+      <div id="topicContent" class="placeholder">
+        Select a topic to view details
+      </div>
+    </div>
+    <button onclick="window.location.href='IT.html'">⬅ Back</button>
+  </div>
+
+  <script type="module">
+  // ✅ Import Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+ const firebaseConfig = {
+  apiKey: "AIzaSyDnwNaWmv_PkdKYFnP9hYmcp3gJHwJbqnM",
+  authDomain: "btech-book-9b2ed.firebaseapp.com",
+  projectId: "btech-book-9b2ed",
+  storageBucket: "btech-book-9b2ed.firebasestorage.app",
+  messagingSenderId: "934417728739",
+  appId: "1:934417728739:web:ca03779ad38328f918f1d6",
+  measurementId: "G-N5ZS76E2WR"
+};
+  // ✅ Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // ✅ Fetch topics from Firestore
+  async function loadTopics() {
+    const list = document.getElementById("topicList");
+    const content = document.getElementById("topicContent");
+    list.innerHTML = "<p>Loading...</p>";
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "AI"));
+      list.innerHTML = ""; // clear loading message
+
+      querySnapshot.forEach((doc) => {
+        const topic = doc.data();
+        const div = document.createElement("div");
+        div.className = "topic";
+        div.textContent = topic.title;
+        div.onclick = () => {
+          content.innerHTML = `
+            <h2>${topic.title}</h2>
+            <p>${topic.description}</p>
+          `;
+        };
+        list.appendChild(div);
+      });
+    } catch (err) {
+      console.error("Error loading topics:", err);
+      list.innerHTML = "<p style='color:red;'>Error loading topics</p>";
+    }
+  }
+
+  // ✅ Load topics on page start
+  loadTopics();
+</script>
+
+</body>
+</html>

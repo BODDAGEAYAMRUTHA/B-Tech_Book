@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BTB BOOKS</title>
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Premium Theme -->
+  <link rel="stylesheet" href="premium.css">
+
+  <link rel="shortcut icon" href="library2.jpeg" type="image/x-icon">
+
+  <style>
+    /* Back button */
+    .back-btn {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      z-index: 999;
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: none;
+      background: linear-gradient(90deg, #6366f1, #ec4899);
+      color: #fff;
+      font-weight: 500;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+
+<body>
+<section class="Book">
+
+  <!-- ================= NAVBAR ================= -->
+  <header>
+    <section class="nave">
+      <section class="binfo">B-Tech Book</section>
+      <section id="naveg">
+        <nav class="aa">
+          <a href="home.html" class="s">Branch</a>
+          <a href="btb_bot.html" class="s">BTB-Bot</a>
+        </nav>
+      </section>
+    </section>
+  </header>
+
+  <!-- ================= MAIN ================= -->
+  <main>
+    <section class="side">
+
+      <!-- Sidebar -->
+      <!-- Sidebar -->
+<aside class="info">
+  <img src="pink-user-icon-rounded-profile-icon-vector.jpg" alt="User Icon" class="img-fluid rounded-circle mb-3">
+  <a id="info" href="#" class="a">User</a>
+  <a href="btb_bot.html" class="a">BTB-BOT</a>
+  <a href="help.html" class="a">Help!</a> <!-- Changed this line -->
+  <a href="log_out.html" class="a" id="logoutLink">Log-out</a>
+</aside>
+
+      <!-- Main Content -->
+      <section class="dive" id="content-area">
+
+        <article style="background-image:url(csebg.jpg);" onclick="window.location.href='csebook.html'">
+          <img src="OIP__1_-removebg-preview.png" alt="">
+          CSE
+        </article>
+
+        <article style="background-image:url(eeebg.jpg);" onclick="window.location.href='ecebook.html'">
+          <img src="OIP__1_-removebg-preview.png" alt="">
+          ECE
+        </article>
+
+        <article style="background-image:url(ITbg.jpg);" onclick="window.location.href='itbook.html'">
+          <img src="OIP__1_-removebg-preview.png" alt="">
+          IT
+        </article>
+
+        <article style="background-image:url(network-background.jpg);" onclick="window.location.href='eeebook.html'">
+          <img src="OIP__1_-removebg-preview.png" alt="">
+          EEE
+        </article>
+
+      </section>
+
+    </section>
+
+    <!-- Back Button -->
+    <button class="back-btn" onclick="window.location.href='home.html'">⬅ Back</button>
+
+  </main>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Firebase & JS -->
+<script type="module">
+  // Import Firebase SDK
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPvhb-YcDLoj40-ID4n98y3p7a9DcYwFI",
+    authDomain: "b-tech-book.firebaseapp.com",
+    projectId: "b-tech-book",
+    storageBucket: "b-tech-book.firebasestorage.app",
+    messagingSenderId: "298368878481",
+    appId: "1:298368878481:web:ab5607279b7bba1f8cfc30"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Show logged-in user email
+  const userLink = document.getElementById("info");
+  onAuthStateChanged(auth, (user) => {
+    userLink.textContent = user ? user.email : "User";
+  });
+
+  // Logout
+  document.getElementById("logoutLink").addEventListener("click", (e) => {
+    e.preventDefault();
+    signOut(auth).then(() => {
+      alert("You have been logged out!");
+      window.location.href = "login.html";
+    }).catch(console.error);
+  });
+</script>
+</body>
+</html>

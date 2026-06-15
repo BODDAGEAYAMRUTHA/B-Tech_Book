@@ -1,0 +1,47 @@
+
+body{
+    margin: auto;
+    padding: 0%;
+    background: linear-gradient(360deg,rgb(190, 190, 243),rgb(245, 224, 228));
+}
+fieldset{
+    background: linear-gradient(360deg,rgb(241, 196, 204),rgb(208, 208, 247));
+    width: 30%;
+    text-align: center;
+    padding: 2rem;
+    margin:9% auto;
+    border: 3px double rgb(196, 141, 150);
+    border-radius: 50px;
+}
+label{
+    font-size: 25px;
+    margin-top: 2rem;
+    
+}
+input{
+    height: 1.5rem;
+    border:1px solid;
+    border-radius: 20px;
+    font-size: large;
+}
+button{
+    margin-top: 8px;
+    padding: 5px;
+    background-color: #9b9be4;
+    color: #fff;
+    border: 2px solid #9b9be4;
+    border-radius: 20px;
+    font-size: large;
+    cursor: pointer;
+}
+button:hover{
+    border: 3px solid #a0a0c8;
+}
+legend{
+    background: linear-gradient(45deg,rgb(241, 196, 204),rgb(208, 208, 247));
+    padding: 5px;
+    border: 2px solid  rgb(196, 141, 150) ;
+    border-radius: 10rem;
+    width: 6rem;
+    color: #1a1818;
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B-TECH Book All-in-One – PDF Viewer</title>
+   <link rel="shortcut icon" href="library2.jpeg" type="image/x-icon">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #222;
+    }
+
+    .book-section {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .pdf-container {
+      border: 2px solid #333;
+      border-radius: 10px;
+      padding: 10px;
+      background: white;
+      width: 250px;
+      transition: 0.3s;
+    }
+
+    .pdf-container:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+    }
+
+    .pdf-preview {
+      width: 100%;
+      height: 250px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Modal Style */
+    #pdfModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    #pdfModal embed {
+      width: 80%;
+      height: 90%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>B-TECH Book All-in-One Library</h1>
+  <p>Click a PDF preview or button to open the full textbook</p>
+
+  <div class="book-section">
+    <!-- Book 1 -->
+    <div class="pdf-container">
+      <a href="IT21.pdf" target="_blank">
+        <embed src="books/IT21.pdf" type="application/pdf" class="pdf-preview">
+      </a>
+      <button onclick="viewPDF('books/IT21.pdf')">View Inside Page</button>
+    </div>
+
+    <!-- Book 2 -->
+    <div class="pdf-container">
+      <a href="IT22.pdf" target="_blank">
+        <embed src="books/IT22.pdf" type="application/pdf" class="pdf-preview">
+      </a>
+      <button onclick="viewPDF('books/IT22.pdf')">View Inside Page</button>
+    </div>
+
+    <!-- Book 3 -->
+    <div class="pdf-container">
+      <a href="IT23.pdf" target="_blank">
+        <embed src="books/IT23.pdf" type="application/pdf" class="pdf-preview">
+      </a>
+      <button onclick="viewPDF('books/IT23.pdf')">View Inside Page</button>
+    </div>
+  </div>
+
+  <!-- Modal for full PDF view -->
+  <div id="pdfModal" onclick="closePDF()">
+    <embed id="pdfViewer" src="" type="application/pdf">
+  </div>
+    <div><button onclick="window.location.href='itbook.html'">⬅ Back</button></div>
+
+  <!-- JavaScript -->
+  <script>
+    // Open PDF in modal
+    function viewPDF(filename) {
+      const modal = document.getElementById('pdfModal');
+      const viewer = document.getElementById('pdfViewer');
+      viewer.src = filename;
+      modal.style.display = 'flex';
+    }
+
+    // Close modal
+    function closePDF() {
+      document.getElementById('pdfModal').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

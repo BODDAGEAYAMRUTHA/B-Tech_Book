@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transmission and Distribution- EEE</title>
+   <link rel="shortcut icon" href="library2.jpeg" type="image/x-icon">
+  <style>
+    /* General Page Style */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f5f5f7;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #0b5ed7;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Layout Container */
+    .main-container {
+      flex: 1;
+      display: flex;
+      height: 100%;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 25%;
+      background-color: #f0f4ff;
+      border-right: 2px solid #e0e0e0;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      color: #0b5ed7;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .topic {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .topic:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Content Area */
+    .content {
+      text-align:left;
+      padding-left:10px;
+      flex: 1;
+      background-color: white;
+      padding: 20px 30px;
+      overflow-y: auto;
+    }
+    #topicContent{
+      text-align:left;
+    }
+
+
+    .content h2 {
+      color: #0b5ed7;
+      margin-bottom: 10px;
+    }
+
+    .placeholder {
+      color: #777;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-top: 100px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>Learning Dashboard</header>
+
+  <div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Topics</h2>
+      <div id="topicList"></div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+      <h1>Transmission and Distribution - EEE</h1>
+      <div id="topicContent" class="placeholder">
+        Select a topic to view details
+      </div>
+    </div>
+    <button onclick="window.location.href='EEE.html'">⬅ Back</button>
+  </div>
+
+  <script type="module">
+  // ✅ Import Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBeRF60wY8FMZlDtf6gB5Io8chflh7dfuQ",
+  authDomain: "btech-book-d7267.firebaseapp.com",
+  projectId: "btech-book-d7267",
+  storageBucket: "btech-book-d7267.firebasestorage.app",
+  messagingSenderId: "392072274309",
+  appId: "1:392072274309:web:551b8bc3955aeb662ca4ec",
+  measurementId: "G-DSRT1SVBXZ"
+};
+
+  // ✅ Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // ✅ Fetch topics from Firestore
+  async function loadTopics() {
+    const list = document.getElementById("topicList");
+    const content = document.getElementById("topicContent");
+    list.innerHTML = "<p>Loading...</p>";
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "Transmission and Distribution"));
+      list.innerHTML = ""; // clear loading message
+
+      querySnapshot.forEach((doc) => {
+        const topic = doc.data();
+        const div = document.createElement("div");
+        div.className = "topic";
+        div.textContent = topic.title;
+        div.onclick = () => {
+          content.innerHTML = `
+            <h2>${topic.title}</h2>
+            <p>${topic.description}</p>
+          `;
+        };
+        list.appendChild(div);
+      });
+    } catch (err) {
+      console.error("Error loading topics:", err);
+      list.innerHTML = "<p style='color:red;'>Error loading topics</p>";
+    }
+  }
+
+  // ✅ Load topics on page start
+  loadTopics();
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BTB-BOT Assistant</title>
+<link rel="shortcut icon" href="library2.jpeg" type="image/x-icon">
+
+<style>
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+}
+
+/* Layout */
+.Book {
+    display: grid;
+    grid-template-rows: 6rem 1fr auto;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, #4b6cb7, #182848);
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side {
+    width: 100%;
+    max-width: 900px;
+    padding: 1rem;
+}
+
+article {
+    background-color: #1E1F28;
+    width: 100%;
+    max-width: 700px;
+    height: 600px;
+    border-radius: 20px;
+    padding: 20px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Chat */
+h2 {
+    text-align: center;
+    color: #FFD700;
+    margin-bottom: 10px;
+}
+
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    background: #2A2C37;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.message {
+    margin: 8px 0;
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 80%;
+}
+
+.message.user {
+    background: #00C9A7;
+    align-self: flex-end;
+}
+
+.message.bot {
+    background: #44475A;
+    align-self: flex-start;
+}
+
+/* Inputs */
+input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    background: #2A2C37;
+    color: white;
+}
+
+button {
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.send-btn { background: #00C9A7; }
+.history-btn { background: #FFD700; }
+.back-btn { background: #FF6B6B; display:none; }
+
+footer button {
+    margin: 15px;
+    background: #FF6B6B;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="Book">
+<header>B-Tech Books</header>
+
+<main>
+<div class="side">
+<article>
+
+<h2>🤖 BTB-BOT</h2>
+
+<!-- History + Back Buttons -->
+<div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+    <button class="history-btn" onclick="showHistory()">📜 History</button>
+    <button class="back-btn" id="backBtn" onclick="showChat()">⬅ Back</button>
+</div>
+
+<div class="chat-box" id="chat-box"></div>
+
+<div style="display:flex;gap:8px;">
+    <input id="user-input" placeholder="Type your question..." />
+    <button class="send-btn" onclick="sendMessage()">Send</button>
+</div>
+
+</article>
+</div>
+</main>
+
+<footer>
+<button onclick="window.location.href='home.html'">⬅ Back</button>
+</footer>
+</div>
+
+<script>
+const API_URL = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/";
+const API_KEY = "sk-default-Xt7ZlO1L5mAqWWMn66V2dXrv10dhiT7U";
+const AGENT_ID = "68f3b493f3f955212b20a398";
+const USER_ID = "amruthabodda278@gmail.com";
+const SESSION_ID = "68f3b493f3f955212b20a398-session";
+
+const chatBox = document.getElementById("chat-box");
+const input = document.getElementById("user-input");
+const backBtn = document.getElementById("backBtn");
+
+const HISTORY_KEY = "btb_chat_history";
+
+input.addEventListener("keypress", e => {
+    if (e.key === "Enter") sendMessage();
+});
+
+function addMessage(sender, text) {
+    const div = document.createElement("div");
+    div.className = `message ${sender}`;
+    div.textContent = (sender === "user" ? "🧑 " : "🤖 ") + text;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    saveHistory(sender, text);
+    return div;
+}
+
+function saveHistory(sender, text) {
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+    history.push({ sender, text, time: new Date().toLocaleString() });
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+}
+
+async function sendMessage() {
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    addMessage("user", msg);
+    input.value = "";
+
+    const botMsg = addMessage("bot", "Thinking...");
+
+    try {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-api-key": API_KEY
+            },
+            body: JSON.stringify({
+                user_id: USER_ID,
+                agent_id: AGENT_ID,
+                session_id: SESSION_ID,
+                message: msg
+            })
+        });
+
+        const data = await res.json();
+        botMsg.textContent = "🤖 " + (data.response || "No response.");
+    } catch {
+        botMsg.textContent = "⚠️ Server error";
+    }
+}
+
+/* ===== HISTORY VIEW ===== */
+function showHistory() {
+    chatBox.innerHTML = "";
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+
+    if (history.length === 0) {
+        chatBox.innerHTML = "<p>No history available.</p>";
+    } else {
+        history.forEach(h => {
+            const div = document.createElement("div");
+            div.className = `message ${h.sender}`;
+            div.textContent = `${h.sender === "user" ? "🧑" : "🤖"} ${h.text}  🕒 ${h.time}`;
+            chatBox.appendChild(div);
+        });
+    }
+    backBtn.style.display = "inline-block";
+}
+
+function showChat() {
+    chatBox.innerHTML = "";
+    backBtn.style.display = "none";
+}
+</script>
+
+</body>
+</html>

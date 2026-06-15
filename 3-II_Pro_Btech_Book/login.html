@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BTB Login</title>
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="shortcut icon" href="library2.jpeg" type="image/x-icon">
+
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px;
+      box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+      border: none;
+    }
+
+    .card h3 {
+      font-weight: 700;
+    }
+
+    .form-control {
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .btn-primary {
+      border-radius: 30px;
+      padding: 10px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #6366f1, #ec4899);
+      border: none;
+    }
+
+    #respo {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .register-link {
+      font-size: 14px;
+    }
+
+    .register-link a {
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card p-4">
+    <h3 class="text-center mb-3">Welcome Back</h3>
+    <p class="text-center text-muted mb-4">Login to continue to B-Tech Book</p>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" id="user_mail" class="form-control" placeholder="Enter email">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" id="user_pwd" class="form-control" placeholder="Enter password">
+    </div>
+
+    <div class="d-grid">
+      <button id="loginBtn" class="btn btn-primary">Login</button>
+    </div>
+
+    <p id="respo" class="text-center text-danger"></p>
+
+    <div class="register-link text-center mt-3">
+      Don’t have an account?
+      <a href="index.html">Register</a>
+    </div>
+  </div>
+
+<!-- Firebase Script (UNCHANGED LOGIC) -->
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js';
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      sendEmailVerification,
+      signOut
+    } from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
+
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPvhb-YcDLoj40-ID4n98y3p7a9DcYwFI",
+      authDomain: "b-tech-book.firebaseapp.com",
+      projectId: "b-tech-book",
+      storageBucket: "b-tech-book.firebasestorage.app",
+      messagingSenderId: "298368878481",
+      appId: "1:298368878481:web:a83a4001ac7c4eb68cfc30"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const respo = document.getElementById('respo');
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const email = document.getElementById('user_mail').value.trim();
+      const password = document.getElementById('user_pwd').value;
+
+      if (!email || !password) {
+        respo.textContent = 'Please enter email and password.';
+        return;
+      }
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        if (!user.emailVerified) {
+          respo.textContent = 'Please verify your email before logging in.';
+          await signOut(auth);
+          return;
+        }
+
+        respo.textContent = 'Login successful — redirecting...';
+        setTimeout(() => {
+          window.location.href = 'home.html';
+        }, 800);
+
+      } catch (err) {
+        console.error(err);
+        if (err.code === 'auth/invalid-credential') {
+          respo.textContent = 'Invalid email or password.';
+        } else {
+          respo.textContent = 'Login failed: ' + err.message;
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

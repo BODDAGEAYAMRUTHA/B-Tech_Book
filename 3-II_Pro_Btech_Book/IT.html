@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Branch</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Premium Theme -->
+  <link rel="stylesheet" href="premium.css">
+
+  <link rel="shortcut icon" href="library2.jpeg" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+   <link rel="shortcut icon" href="library2.jpeg" type="image/x-icon">
+  <style>
+        body{
+            width: 1fr;
+        }
+        button{
+            position: fixed;
+            bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+  <section class="Book">
+    <!-- Header / Navbar -->
+    <header>
+      <section class="nave">
+        <section class="binfo">B-Tech Book</section>
+        <section id="naveg">
+          <nav class="aa">
+            <a href="books.html" class="s">Book</a>
+            <a href="btb_bot.html" class="s">BTB-Bot</a>
+          </nav>
+        </section>
+      </section>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <section class="side">
+        <!-- Left Sidebar -->
+        <!-- Sidebar -->
+<aside class="info">
+  <img src="pink-user-icon-rounded-profile-icon-vector.jpg" alt="User Icon" class="img-fluid rounded-circle mb-3">
+  <a id="info" href="#" class="a">User</a>
+  <a href="btb_bot.html" class="a">BTB-BOT</a>
+  <a href="help.html" class="a">Help!</a> <!-- Changed this line -->
+  <a href="log_out.html" class="a" id="logoutLink">Log-out</a>
+</aside>
+  <section class="dive" id="content-area">
+    <a href="Dbms.html"><article style="background-image: url('csebg.jpg');" onclick="loadPage('DBMS.html')">
+      <img src="OIP__1_-removebg-preview.png" alt=""><br> DBMS
+    </article></a>
+
+    <article style="background-image: url('eeebg.jpg');" onclick="loadPage('AI.html')">
+      <img src="OIP__1_-removebg-preview.png" alt=""><br>Artificial Intelligence
+    </article>
+
+    <article style="background-image: url('ITbg.jpg');" onclick="loadPage('DS.html')">
+      <img src="OIP__1_-removebg-preview.png" alt=""><br>Data Science
+    </article>
+
+    <article style="background-image: url('network-background.jpg');" onclick="loadPage('CN.html')">
+      <img src="OIP__1_-removebg-preview.png" alt=""><br>Computer Networks
+    </article>
+  </section>
+
+  <button onclick="window.location.href='home.html'">⬅ Back</button>
+
+  <script>
+    function loadPage(page) {
+      // Opens the new page in the same tab
+      // window.location.href = page;
+      window.open(page, '_blank');
+
+    }
+  </script>
+</body>
+</html>
